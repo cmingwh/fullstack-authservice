@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ibm.fullstack.dto.UserDtl;
 import com.ibm.fullstack.service.UserService;
-import com.ibm.fullstack.view.UserView;
 
 @RestController
 @CrossOrigin
@@ -21,7 +21,7 @@ public class UserController {
 
     @GetMapping(value = "/user")
     @PreAuthorize("hasAuthority('admin')")
-    public UserView getUserByName(@RequestParam("userName") String userName) {
-        return userService.getUserByUserName(userName);
+    public UserDtl getUserByName(@RequestParam("userId") Long userId) {
+        return userService.getUserById(userId);
     }
 }

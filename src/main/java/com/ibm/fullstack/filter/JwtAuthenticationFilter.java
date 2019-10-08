@@ -46,9 +46,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = getJwtFromRequest(request);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
-            String username = getUsernameFromJwt(token, authParameters.getJwtTokenSecret());
+            String userName = getUserIdFromJwt(token, authParameters.getJwtTokenSecret());
 
-            UserDetails userDetails = userService.loadUserByUsername(username);
+            UserDetails userDetails = userService.loadUserByUsername(userName);
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     userDetails,null,userDetails.getAuthorities());
@@ -81,7 +81,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * @param signKey jwt sign key, set in properties file.
      * @return user name.
      */
-    private String getUsernameFromJwt(String token, String signKey) {
+    private String getUserIdFromJwt(String token, String signKey) {
         return Jwts.parser().setSigningKey(signKey)
                 .parseClaimsJws(token)
                 .getBody()
