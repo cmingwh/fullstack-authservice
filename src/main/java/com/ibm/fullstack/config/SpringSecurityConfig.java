@@ -3,6 +3,7 @@ package com.ibm.fullstack.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -50,8 +51,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	        .addFilterBefore(getJwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 	        .addFilterAt(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 	        .authorizeRequests()
-	        .antMatchers("/", "/api/login**", "/resource/*/find**", "/training/*/find**").permitAll()
-	        .antMatchers("/resource/delete**", "/resource/save**").hasAuthority("admin")
+	        .antMatchers("/", "/api/login**").permitAll()
+	        .antMatchers(HttpMethod.GET,"/resource/**").permitAll()
+	        .antMatchers(HttpMethod.POST,"/resource/**").hasRole("admin")
+	        .antMatchers(HttpMethod.DELETE,"/resource/**").hasRole("admin")
 	        .anyRequest().authenticated()
             .and().formLogin()
             .and().csrf().disable()

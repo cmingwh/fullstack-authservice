@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
 import com.ibm.fullstack.entity.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, String> {
 
-    @Query(value = "select r.role from User u inner join u.roles as r where u.userId = :userId")
-    List<String> queryUserOwnedRoles(@Param(value = "userId") Long userId);
+    @Query(value = "select r.role from User u inner join u.roles as r where u.userName = :name")
+    List<String> queryUserOwnedRoleCodes(@Param("name")String name);
 
 	User findByUserName(String userName);
 }

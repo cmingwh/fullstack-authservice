@@ -1,8 +1,6 @@
 package com.ibm.fullstack.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,43 +12,36 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.ibm.fullstack.entity.User;
+import com.ibm.fullstack.entity.UserRoleMap;
 import com.ibm.fullstack.repository.UserRepository;
-import com.ibm.fullstack.dto.UserDtl;
+import com.ibm.fullstack.repository.UserRoleMapRepository;
 
 @Service("userService")
 public class UserService implements UserDetailsService {
 	@Autowired
     private UserRepository userRepository;
 	
+//	@Autowired
+//    private RoleRepository roleRepository;
+	
+	@Autowired
+    private UserRoleMapRepository urRepository;
+	
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		User user = this.userRepository.findByUserName(userName);
+		User user = userRepository.findByUserName(userName);
 
         if(user == null){
             //throw exception inform front end not this user
             throw new UsernameNotFoundException("user + " + userName + "not found.");
         }
-
-        Long userId = user.getUserId();
-        List<String> roleList = this.userRepository.queryUserOwnedRoles(userId);
+        
+        List<UserRoleMap> roleList = urRepository.findByUserId(user.getUserId());
         List<GrantedAuthority> authorities = roleList.stream()
-                .map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
+                .map(role -> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList());
 
         return new org.springframework.security.core.userdetails
                 .User(userName, user.getPassword(), authorities);
 	}
 	
-    public UserDtl getUserById(Long userId){
-    	UserDtl userView = new UserDtl();
-        Optional<User> userObj = userRepository.findById(userId);
-        User user = userObj.get();
-        if(user != null) {
-        	userView.setUserName(user.getUserName());
-            userView.setUserId(user.getUserId());
-            List<String> roles = new ArrayList<>();
-            user.getRoles().stream().forEach(role -> roles.add(role.getRole()));
-            userView.setRoles(roles);
-        }
-        return userView;
-    }
 }

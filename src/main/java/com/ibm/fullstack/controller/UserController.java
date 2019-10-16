@@ -19,9 +19,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(value = "/user")
-    @PreAuthorize("hasAuthority('admin')")
-    public UserDtl getUserByName(@RequestParam("userId") Long userId) {
-        return userService.getUserById(userId);
-    }
+//    @GetMapping(value = "/user")
+//    @PreAuthorize("hasAuthority('admin')")
+//    public UserDtl getUserByName(@RequestParam("userId") Long userId) {
+//        return userService.getUserById(userId);
+//    }
 }
