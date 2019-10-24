@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ibm.fullstack.entity.User;
@@ -27,6 +28,15 @@ public class UserService implements UserDetailsService {
 	@Autowired
     private UserRoleMapRepository urRepository;
 	
+	public User findByUserName(String userName) {
+		return userRepository.findByUserName(userName);
+	}
+	
+	public boolean existsUserName(String userName) {
+		User user = this.findByUserName(userName);
+		return user != null;
+	}
+	
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		User user = userRepository.findByUserName(userName);
@@ -42,6 +52,17 @@ public class UserService implements UserDetailsService {
 
         return new org.springframework.security.core.userdetails
                 .User(userName, user.getPassword(), authorities);
+	}
+
+	public User register(User user) {
+		enCodePassword(user);
+		return userRepository.save(user);
+	}
+	
+	public void enCodePassword(User user) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encodedPassword = passwordEncoder.encode(user.getPassword().trim());
+		user.setPassword(encodedPassword);
 	}
 	
 }
