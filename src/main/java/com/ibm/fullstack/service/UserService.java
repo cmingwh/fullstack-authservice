@@ -26,7 +26,7 @@ public class UserService implements UserDetailsService {
 //    private RoleRepository roleRepository;
 	
 	@Autowired
-    private UserRoleMapRepository urRepository;
+    private UserRoleMapRepository userRoleRepository;
 	
 	public User findByUserName(String userName) {
 		return userRepository.findByUserName(userName);
@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("user + " + userName + "not found.");
         }
         
-        List<UserRoleMap> roleList = urRepository.findByUserId(user.getUserId());
+        List<UserRoleMap> roleList = userRoleRepository.findByUserId(user.getUserId());
         List<GrantedAuthority> authorities = roleList.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList());
 
