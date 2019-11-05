@@ -51,7 +51,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	        .addFilterBefore(getJwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 	        .addFilterAt(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 	        .authorizeRequests()
-	        .antMatchers("/", "/api/login**", "/api/signup**").permitAll()
+	        .antMatchers("/", "/api/login**", "/api/signup**", "/training/**").permitAll()
 	        .antMatchers(HttpMethod.GET,"/resource/**").permitAll()
 	        .antMatchers(HttpMethod.POST,"/resource/**").hasRole("admin")
 	        .antMatchers(HttpMethod.DELETE,"/resource/**").hasRole("admin")
