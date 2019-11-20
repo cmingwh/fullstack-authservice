@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("user + " + userName + "not found.");
         }
         
-        List<UserRoleMap> roleList = userRoleRepository.findByUserId(user.getUserId());
+        List<UserRoleMap> roleList = userRoleRepository.findByUserName(user.getUserName());
         List<GrantedAuthority> authorities = roleList.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList());
 

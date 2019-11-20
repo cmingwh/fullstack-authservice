@@ -26,7 +26,7 @@ public class UserRoleMap {
 	private String role;
 
 	@Id
-	@Column(name = "user_id")
-	private Long userId;
+	@Column(name = "user_name")
+	private String userName;
 
 }

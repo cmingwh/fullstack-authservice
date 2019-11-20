@@ -22,13 +22,14 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "sys_user", schema = "fullstack")
 public class User {
+	
 	@Id
+	@Column(name="user_name")
+	private String userName;
+	
 	@GeneratedValue
 	@Column(name="user_id")
 	private Long userId;
-	
-	@Column(name="user_name")
-	private String userName;
 
 	@Column(name="password")
 	private String password;
@@ -64,8 +65,8 @@ public class User {
 	private Boolean resetPassword = false;
 
 	@ManyToMany
-	@JoinTable(name = "sys_user_role", joinColumns = @JoinColumn(name = "user_id", 
-		referencedColumnName = "user_id", updatable = false, insertable = false), 
+	@JoinTable(name = "sys_user_role", joinColumns = @JoinColumn(name = "user_name", 
+		referencedColumnName = "user_name", updatable = false, insertable = false), 
 		inverseJoinColumns = @JoinColumn(name = "role", referencedColumnName = "role", 
 		updatable = false, insertable = false))
 	private List<Role> roles;

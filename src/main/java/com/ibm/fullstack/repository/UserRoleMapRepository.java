@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.ibm.fullstack.entity.UserRoleMap;
 
 @Repository
-public interface UserRoleMapRepository extends JpaRepository<UserRoleMap, Long> {
+public interface UserRoleMapRepository extends JpaRepository<UserRoleMap, String> {
 
-	List<UserRoleMap> findByUserId(Long userId);
+	List<UserRoleMap> findByUserName(String userName);
 }

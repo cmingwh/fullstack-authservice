@@ -62,7 +62,7 @@ public class ApplicationTests {
 			user = userRepository.findByUserName("cmingwh@cn.ibm.com");
 			UserRoleMap userMap = new UserRoleMap();
 			userMap.setRole("user");
-			userMap.setUserId(user.getUserId());
+			userMap.setUserName(user.getUserName());
 			userRoleMapRepository.save(userMap);
 		}
 		
@@ -79,7 +79,7 @@ public class ApplicationTests {
 			admin = userRepository.findByUserName("admin");
 			UserRoleMap userMap = new UserRoleMap();
 			userMap.setRole("admin");
-			userMap.setUserId(admin.getUserId());
+			userMap.setUserName(admin.getUserName());
 			userRoleMapRepository.save(userMap);
 		}
 	}

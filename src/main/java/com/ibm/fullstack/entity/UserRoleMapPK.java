@@ -14,5 +14,5 @@ public class UserRoleMapPK implements Serializable {
 
 	private String role;
 
-	private Long userId;
+	private String userName;
 }
