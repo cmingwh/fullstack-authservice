@@ -1,6 +1,11 @@
 package com.ibm.fullstack.controller;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +19,11 @@ import com.ibm.fullstack.service.UserService;
 @CrossOrigin
 @RequestMapping("/api")
 public class UserController {
+	Logger logger = LoggerFactory.getLogger(UserController.class);
 
+    @Autowired
+    DiscoveryClient discoveryClient;
+    
     @Autowired
     private UserService userService;
 
@@ -25,5 +34,13 @@ public class UserController {
     	}else {
     		return "{\"result\": \"exists\"}";
     	}
+    }
+    
+    @RequestMapping("/hello")
+    public List<String> getServices() {
+        List<String> instance = discoveryClient.getServices();
+        //打印服务的服务id
+        logger.info("*********" + instance.toString());
+        return instance;
     }
 }
